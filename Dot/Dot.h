@@ -8,7 +8,7 @@
 #include <utility>
 
 namespace battle {
-  enum class Direction : std::uint32_t {
+  enum class Direction : std::int32_t {
     NW = 0,
     N = 1,
     NE = 2,
@@ -37,11 +37,11 @@ namespace battle {
     virtual ~Dot() = default;
 
     virtual std::string getName() const noexcept = 0;
-    virtual void wasEliminated(std::uint32_t team, std::uint32_t killer,
-                               std::uint32_t row, std::uint32_t column) noexcept = 0;
+    virtual void wasEliminated(std::int32_t team, std::int32_t killer,
+                               std::int32_t row, std::int32_t column) noexcept = 0;
 
-    virtual RunAction run(std::uint32_t team, std::array<std::uint32_t, 8> view,
-                          std::uint32_t row, std::uint32_t column) noexcept = 0;
+    virtual RunAction run(std::int32_t team, std::array<std::int32_t, 8> view,
+                          std::int32_t row, std::int32_t column) noexcept = 0;
   };
 }  // namespace battle
 

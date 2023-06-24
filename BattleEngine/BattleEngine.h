@@ -15,7 +15,7 @@
 namespace battle {
   class Engine {
    public:
-    Engine(std::uint32_t width, std::uint32_t height);
+    Engine(std::int32_t width, std::int32_t height);
 
     bool isRunning();
 
@@ -26,10 +26,10 @@ namespace battle {
 
    private:
     Board board_;
-    std::uint32_t currentTeam_ = 0;
+    std::int32_t currentTeam_ = 0;
     std::mt19937 generator_;
 
-    std::array<std::uint32_t, 8> getSurrounding(std::uint32_t x, std::uint32_t y) const;
+    std::array<std::int32_t, 8> getSurrounding(std::int32_t x, std::int32_t y) const;
 
     void execute(RunAction action, Coordinate space);
   };

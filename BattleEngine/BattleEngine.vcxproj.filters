@@ -51,5 +51,8 @@
     <ClInclude Include="BattlingDots.h">
       <Filter>TestDots</Filter>
     </ClInclude>
+    <ClInclude Include="EngineUtility.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

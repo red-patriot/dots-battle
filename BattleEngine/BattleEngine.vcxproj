@@ -150,6 +150,7 @@
     <ClInclude Include="BattlingDots.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="EmptyDot.h" />
+    <ClInclude Include="EngineUtility.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="TestDot.h" />
   </ItemGroup>

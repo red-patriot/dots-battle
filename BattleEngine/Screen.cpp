@@ -7,7 +7,7 @@
 
 namespace battle {
 
-  Screen::Screen(std::uint32_t width, std::uint32_t height) :
+  Screen::Screen(std::int32_t width, std::int32_t height) :
       width_(width),
       height_(height),
       screen_(width_, height_) { }
@@ -25,13 +25,18 @@ namespace battle {
     auto reset = screen_.ResetPosition();
     screen_.Clear();
 
-    for (std::uint32_t y = 0; y < height_; ++y) {
-      for (std::uint32_t x = 0; x < width_; ++x) {
-        std::uint32_t team = board.getTeam(x, y);
+    for (std::int32_t y = 0; y < height_; ++y) {
+      for (std::int32_t x = 0; x < width_; ++x) {
+        std::int32_t team = board.getTeam(x, y);
         if (team) {
           ftxui::Color color = COLORS[team];
           auto& px = screen_.PixelAt(x, y);
           px.character = "O";
+          px.foreground_color = color;
+        } else {
+          ftxui::Color color = ftxui::Color::White;
+          auto& px = screen_.PixelAt(x, y);
+          px.character = "-";
           px.foreground_color = color;
         }
       }
