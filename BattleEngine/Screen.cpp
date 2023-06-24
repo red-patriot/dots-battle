@@ -44,6 +44,7 @@ namespace battle {
 
     std::cout << reset;
     screen_.Print();
+    std::cout << std::flush;
   }
 
 }  // namespace battle

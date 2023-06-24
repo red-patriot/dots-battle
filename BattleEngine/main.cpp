@@ -5,12 +5,13 @@
 #include <chrono>
 
 using namespace std::chrono_literals;
-static const std::chrono::milliseconds loopTime = 1000ms;
+static const std::chrono::milliseconds loopTime = 250ms;
 
 int main() {
-  battle::Engine engine{6, 4};
-  battle::Screen screen{6, 4};
+  battle::Engine engine{6, 6};
+  battle::Screen screen{6, 6};
 
+  engine.addNewPlayer(std::make_unique<battle::test::Test1>());
   engine.addNewPlayer(std::make_unique<battle::test::Test1>());
   screen.render(engine.getCurrentBoard());
 
