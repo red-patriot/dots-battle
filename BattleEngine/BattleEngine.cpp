@@ -33,7 +33,7 @@ namespace battle {
       x = distWidth(generator_);
       y = distHeight(generator_);
       ++count;
-    } while (board_.getTeam(x, y) != 0 && count < 100);
+    } while (board_.getTeam(Coordinate{x, y}) != 0 && count < 100);
 
     if (count >= 100) {
       throw std::logic_error(std::format("Cannot find a space for new player on team {}",
@@ -41,7 +41,7 @@ namespace battle {
     }
 
     ++currentTeam_;
-    board_.setBox(x, y, {.team = currentTeam_, .dot = std::move(newPlayer)});
+    board_.setSpace(Coordinate{x, y}, {.team = currentTeam_, .dot = std::move(newPlayer)});
   }
 
   void Engine::runOnce() {
@@ -53,10 +53,10 @@ namespace battle {
 
     for (auto y = ys.begin(); y != ys.end(); ++y) {
       for (auto x = xs.begin(); x != xs.end(); ++x) {
-        if (board_.getTeam(*x, *y)) {
+        if (board_.getTeam(Coordinate{*x, *y})) {
           std::array<std::int32_t, 8> surrounding = getSurrounding(*x, *y);
 
-          Board::Space& current = board_.getSpace(*x, *y);
+          Board::Space& current = board_.getSpace(Coordinate{*x, *y});
           RunAction action = current.dot->run(current.team, surrounding, *x, *y);
           execute(std::move(action), Coordinate{*x, *y});
         }
@@ -70,14 +70,14 @@ namespace battle {
 
   std::array<std::int32_t, 8> Engine::getSurrounding(std::int32_t x, std::int32_t y) const {
     std::array<std::int32_t, 8> ret;
-    ret[0] = board_.getTeam(x - 1, y - 1);
-    ret[1] = board_.getTeam(x, y - 1);
-    ret[2] = board_.getTeam(x + 1, y - 1);
-    ret[3] = board_.getTeam(x - 1, y);
-    ret[4] = board_.getTeam(x + 1, y);
-    ret[5] = board_.getTeam(x - 1, y + 1);
-    ret[6] = board_.getTeam(x, y + 1);
-    ret[7] = board_.getTeam(x + 1, y + 1);
+    ret[0] = board_.getTeam(Coordinate{x - 1, y - 1});
+    ret[1] = board_.getTeam(Coordinate{x, y - 1});
+    ret[2] = board_.getTeam(Coordinate{x + 1, y - 1});
+    ret[3] = board_.getTeam(Coordinate{x - 1, y});
+    ret[4] = board_.getTeam(Coordinate{x + 1, y});
+    ret[5] = board_.getTeam(Coordinate{x - 1, y + 1});
+    ret[6] = board_.getTeam(Coordinate{x, y + 1});
+    ret[7] = board_.getTeam(Coordinate{x + 1, y + 1});
     return ret;
   }
 

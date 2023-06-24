@@ -17,38 +17,40 @@ namespace battle {
     }
   }
 
-  const Board::Space& Board::getSpace(std::int32_t x, std::int32_t y) const noexcept {
+  const Board::Space& Board::getSpace(Coordinate coord) const noexcept {
+    const auto& [x, y] = coord;
     if (y >= 0 && y < height_ && x >= 0 && x < width_) {
       return board_[y * width_ + x];
     }
     return outOfBounds_;
   }
 
-  Board::Space& Board::getSpace(std::int32_t x, std::int32_t y) {
+  Board::Space& Board::getSpace(Coordinate coord) {
+    const auto& [x, y] = coord;
     if (y >= 0 && y < height_ && x >= 0 && x < width_) {
       return board_[y * width_ + x];
     }
     throw std::domain_error(std::format("{}, {} is out of range for the current game board", x, y));
   }
-  std::int32_t Board::getTeam(std::int32_t x, std::int32_t y) const noexcept {
-    return getSpace(x, y).team;
+  std::int32_t Board::getTeam(Coordinate coord) const noexcept {
+    return getSpace(coord).team;
   }
-  Dot* Board::getDot(std::int32_t x, std::int32_t y) noexcept {
-    return getSpace(x, y).dot.get();
+  Dot* Board::getDot(Coordinate coord) noexcept {
+    return getSpace(coord).dot.get();
   }
-  Dot const* Board::getDot(std::int32_t x, std::int32_t y) const noexcept {
-    return getSpace(x, y).dot.get();
+  Dot const* Board::getDot(Coordinate coord) const noexcept {
+    return getSpace(coord).dot.get();
   }
-  void Board::setBox(std::int32_t x, std::int32_t y, Space box) {
-    getSpace(x, y) = std::move(box);
+  void Board::setSpace(Coordinate coord, Space box) {
+    getSpace(coord) = std::move(box);
   }
   void Board::moveDot(Coordinate from, Coordinate to) {
-    // Move can only move to an unoccupied space in the board bounds,
-    // if a space is full or out of bounds, ignore a move to it
+    // Move can only move to an unoccupied coord in the board bounds,
+    // if a coord is full or out of bounds, ignore a move to it
     if ((to.y >= 0 && to.y < height_ && to.x >= 0 && to.x < width_) &&
-        !getTeam(to.x, to.y)) {
+        !getTeam(to)) {
       using std::swap;
-      swap(getSpace(from.x, from.y), getSpace(to.x, to.y));
+      swap(getSpace(from), getSpace(to));
     }
     return;
   }

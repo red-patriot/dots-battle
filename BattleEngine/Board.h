@@ -26,14 +26,14 @@ namespace battle {
     std::int32_t width() const noexcept { return width_; }
     std::int32_t height() const noexcept { return height_; }
 
-    const Space& getSpace(std::int32_t x, std::int32_t y) const noexcept;
-    Space& getSpace(std::int32_t x, std::int32_t y);
+    const Space& getSpace(Coordinate coord) const noexcept;
+    Space& getSpace(Coordinate coord);
 
-    std::int32_t getTeam(std::int32_t x, std::int32_t y) const noexcept;
-    Dot* getDot(std::int32_t x, std::int32_t y) noexcept;
-    Dot const* getDot(std::int32_t x, std::int32_t y) const noexcept;
+    std::int32_t getTeam(Coordinate coord) const noexcept;
+    Dot* getDot(Coordinate coord) noexcept;
+    Dot const* getDot(Coordinate coord) const noexcept;
 
-    void setBox(std::int32_t x, std::int32_t y, Space box);
+    void setSpace(Coordinate coord, Space box);
 
     void moveDot(Coordinate from, Coordinate to);
 

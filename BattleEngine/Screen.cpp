@@ -27,7 +27,7 @@ namespace battle {
 
     for (std::int32_t y = 0; y < height_; ++y) {
       for (std::int32_t x = 0; x < width_; ++x) {
-        std::int32_t team = board.getTeam(x, y);
+        std::int32_t team = board.getTeam(Coordinate{x, y});
         if (team) {
           ftxui::Color color = COLORS[team];
           auto& px = screen_.PixelAt(x, y);
