@@ -1,4 +1,5 @@
 #include "BattlingDots.h"
+#include "BattlingDots.h"
 
 #include <random>
 

@@ -10,8 +10,8 @@ namespace battle::test {
     void wasEliminated(std::uint32_t team, std::uint32_t killer,
                        std::uint32_t row, std::uint32_t column) noexcept override;
 
-    ::battle::RunAction run(std::uint32_t team, std::array<std::uint32_t, 8> view,
-                            std::uint32_t row, std::uint32_t column) noexcept override;
+    RunAction run(std::uint32_t team, std::array<std::uint32_t, 8> view,
+                  std::uint32_t row, std::uint32_t column) noexcept override;
   };
 
   class Test2 : public Dot {
@@ -20,8 +20,8 @@ namespace battle::test {
     void wasEliminated(std::uint32_t team, std::uint32_t killer,
                        std::uint32_t row, std::uint32_t column) noexcept override;
 
-    ::battle::RunAction run(std::uint32_t team, std::array<std::uint32_t, 8> view,
-                            std::uint32_t row, std::uint32_t column) noexcept override;
+    RunAction run(std::uint32_t team, std::array<std::uint32_t, 8> view,
+                  std::uint32_t row, std::uint32_t column) noexcept override;
   };
 
   class Test3 : public Dot {
@@ -30,8 +30,8 @@ namespace battle::test {
     void wasEliminated(std::uint32_t team, std::uint32_t killer,
                        std::uint32_t row, std::uint32_t column) noexcept override;
 
-    ::battle::RunAction run(std::uint32_t team, std::array<std::uint32_t, 8> view,
-                            std::uint32_t row, std::uint32_t column) noexcept override;
+    RunAction run(std::uint32_t team, std::array<std::uint32_t, 8> view,
+                  std::uint32_t row, std::uint32_t column) noexcept override;
   };
 }  // namespace battle::test
 

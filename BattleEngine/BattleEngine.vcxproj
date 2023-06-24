@@ -133,6 +133,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BattleEngine.cpp" />
+    <ClCompile Include="BattlingDots.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="EmptyDot.cpp" />
     <ClCompile Include="main.cpp" />

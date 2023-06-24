@@ -43,14 +43,27 @@ namespace battle {
     board_.setBox(x, y, {.team = currentTeam_, .square = std::move(newPlayer)});
   }
 
-  void Engine::runOnce() {
-    for (std::uint32_t y = 0; y < board_.height(); ++y) {
-      for (std::uint32_t x = 0; x < board_.width(); ++x) {
-        if (board_.getTeam(x, y)) {
-          std::array<std::uint32_t, 8> surrounding = getSurrounding(x, y);
+  std::vector<std::uint32_t> createIndices(std::uint32_t length) {
+    std::vector<std::uint32_t> ret(length);
+    std::ranges::generate(ret, [n = 0]() mutable { return n++; });
+    return ret;
+  }
 
-          Board::Box& current = board_.getBox(x, y);
-          current.square->run(current.team, surrounding, x, y);
+  void Engine::runOnce() {
+    static std::vector<std::uint32_t> xs = createIndices(board_.width());
+    static std::vector<std::uint32_t> ys = createIndices(board_.height());
+
+    std::ranges::shuffle(xs, generator_);
+    std::ranges::shuffle(ys, generator_);
+
+    for (auto y = ys.begin(); y != ys.end(); ++y) {
+      for (auto x = xs.begin(); x != xs.end(); ++x) {
+        if (board_.getTeam(*x, *y)) {
+          std::array<std::uint32_t, 8> surrounding = getSurrounding(*x, *y);
+
+          Board::Box& current = board_.getBox(*x, *y);
+          auto action = current.square->run(current.team, surrounding, *x, *y);
+
         }
       }
     }
