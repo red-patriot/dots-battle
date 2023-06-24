@@ -1,5 +1,6 @@
 #include "BattleEngine.h"
 
+#include <algorithm>
 #include <chrono>
 #include <exception>
 #include <format>
@@ -10,15 +11,16 @@
 namespace battle {
 
   Engine::Engine(std::uint32_t width, std::uint32_t height) :
-      board_(width, height) { }
+      board_(width, height) { 
+    std::random_device rd;
+    generator_ = std::mt19937{rd()};
+  }
 
   bool Engine::isRunning() {
     return true;
   }
 
   void Engine::addNewPlayer(std::unique_ptr<Dot> newPlayer) {
-    std::random_device rd;
-    static std::mt19937 generator{rd()};
     static std::uniform_int_distribution<std::uint32_t> distWidth(0, board_.width() - 1);
     static std::uniform_int_distribution<std::uint32_t> distHeight(0, board_.height() - 1);
 
@@ -27,8 +29,8 @@ namespace battle {
 
     int count = 0;
     do {
-      x = distWidth(generator);
-      y = distHeight(generator);
+      x = distWidth(generator_);
+      y = distHeight(generator_);
       ++count;
     } while (board_.getTeam(x, y) != 0 && count < 100);
 

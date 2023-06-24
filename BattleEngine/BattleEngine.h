@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <random>
 #include <span>
 #include <vector>
 #include <utility>
@@ -25,8 +26,8 @@ namespace battle {
 
    private:
     Board board_;
-
     std::uint32_t currentTeam_ = 0;
+    std::mt19937 generator_;
 
     std::array<std::uint32_t, 8> getSurrounding(std::uint32_t x, std::uint32_t y) const;
   };
