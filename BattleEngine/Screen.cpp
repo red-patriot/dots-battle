@@ -36,7 +36,7 @@ namespace battle {
         } else {
           ftxui::Color color = ftxui::Color::White;
           auto& px = screen_.PixelAt(x, y);
-          px.character = "-";
+          px.character = "+";
           px.foreground_color = color;
         }
       }
@@ -44,7 +44,6 @@ namespace battle {
 
     std::cout << reset;
     screen_.Print();
-    std::cout << std::flush;
   }
 
 }  // namespace battle
