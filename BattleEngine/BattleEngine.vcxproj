@@ -24,7 +24,7 @@
     <ProjectGuid>{7935e0ad-30a6-47fe-9d9e-6649c57d26d3}</ProjectGuid>
     <RootNamespace>SquareBattle</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>DotsBattle</ProjectName>
+    <ProjectName>BattleEngine</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -140,7 +140,7 @@
     <ClCompile Include="TestDot.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Square\Square.vcxproj">
+    <ProjectReference Include="..\Dot\Dot.vcxproj">
       <Project>{d9665a60-0891-4da0-bae7-4d82c43062c4}</Project>
     </ProjectReference>
   </ItemGroup>
