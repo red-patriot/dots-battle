@@ -35,7 +35,9 @@ namespace battle {
 
     void setSpace(Coordinate coord, Space box);
 
-    void moveDot(Coordinate from, Coordinate to);
+    bool moveDot(Coordinate from, Coordinate to);
+
+    size_t boardIndex(Coordinate space) const noexcept;
 
    private:
     std::int32_t width_;

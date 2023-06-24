@@ -20,7 +20,7 @@ namespace battle {
   const Board::Space& Board::getSpace(Coordinate coord) const noexcept {
     const auto& [x, y] = coord;
     if (y >= 0 && y < height_ && x >= 0 && x < width_) {
-      return board_[y * width_ + x];
+      return board_[boardIndex(coord)];
     }
     return outOfBounds_;
   }
@@ -28,7 +28,7 @@ namespace battle {
   Board::Space& Board::getSpace(Coordinate coord) {
     const auto& [x, y] = coord;
     if (y >= 0 && y < height_ && x >= 0 && x < width_) {
-      return board_[y * width_ + x];
+      return board_[boardIndex(coord)];
     }
     throw std::domain_error(std::format("{}, {} is out of range for the current game board", x, y));
   }
@@ -44,14 +44,18 @@ namespace battle {
   void Board::setSpace(Coordinate coord, Space box) {
     getSpace(coord) = std::move(box);
   }
-  void Board::moveDot(Coordinate from, Coordinate to) {
+  bool Board::moveDot(Coordinate from, Coordinate to) {
     // Move can only move to an unoccupied coord in the board bounds,
     // if a coord is full or out of bounds, ignore a move to it
     if ((to.y >= 0 && to.y < height_ && to.x >= 0 && to.x < width_) &&
         !getTeam(to)) {
       using std::swap;
       swap(getSpace(from), getSpace(to));
+      return true;
     }
-    return;
+    return false;
+  }
+  size_t Board::boardIndex(Coordinate space) const noexcept {
+    return space.y * width_ + space.x;
   }
 }  // namespace battle

@@ -26,10 +26,14 @@ namespace battle {
 
    private:
     Board board_;
+    std::uint8_t turnCounter_ = -1;
+    std::vector<std::uint8_t> moveCounters_;
     std::int32_t currentTeam_ = 0;
     std::mt19937 generator_;
 
     std::array<std::int32_t, 8> getSurrounding(std::int32_t x, std::int32_t y) const;
+    bool hasMoved(Coordinate space) const noexcept;
+    void markMoved(Coordinate space) noexcept;
 
     void execute(RunAction action, Coordinate space);
   };
