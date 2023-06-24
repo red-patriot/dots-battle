@@ -40,7 +40,7 @@ namespace battle {
     }
 
     ++currentTeam_;
-    board_.setBox(x, y, {.team = currentTeam_, .square = std::move(newPlayer)});
+    board_.setBox(x, y, {.team = currentTeam_, .dot = std::move(newPlayer)});
   }
 
   std::vector<std::uint32_t> createIndices(std::uint32_t length) {
@@ -61,9 +61,8 @@ namespace battle {
         if (board_.getTeam(*x, *y)) {
           std::array<std::uint32_t, 8> surrounding = getSurrounding(*x, *y);
 
-          Board::Box& current = board_.getBox(*x, *y);
-          auto action = current.square->run(current.team, surrounding, *x, *y);
-
+          Board::Space& current = board_.getSpace(*x, *y);
+          auto action = current.dot->run(current.team, surrounding, *x, *y);
         }
       }
     }
@@ -84,5 +83,9 @@ namespace battle {
     ret[6] = board_.getTeam(x, y + 1);
     ret[7] = board_.getTeam(x + 1, y + 1);
     return ret;
+  }
+  void Engine::execute(RunAction action, Coordinate space) {
+    switch (action.type) {
+    }
   }
 }  // namespace battle

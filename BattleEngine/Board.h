@@ -9,11 +9,16 @@
 #include <Dot.h>
 
 namespace battle {
+  struct Coordinate {
+    std::uint32_t x;
+    std::uint32_t y;
+  };
+
   class Board {
    public:
-    struct Box {
+    struct Space {
       std::uint32_t team;
-      std::unique_ptr<Dot> square;
+      std::unique_ptr<Dot> dot;
     };
 
     Board(std::uint32_t width, std::uint32_t height);
@@ -21,20 +26,22 @@ namespace battle {
     std::uint32_t width() const noexcept { return width_; }
     std::uint32_t height() const noexcept { return height_; }
 
-    const Box& getBox(std::uint32_t x, std::uint32_t y) const noexcept;
-    Box& getBox(std::uint32_t x, std::uint32_t y);
+    const Space& getSpace(std::uint32_t x, std::uint32_t y) const noexcept;
+    Space& getSpace(std::uint32_t x, std::uint32_t y);
 
     std::uint32_t getTeam(std::uint32_t x, std::uint32_t y) const noexcept;
-    Dot* getSquare(std::uint32_t x, std::uint32_t y) noexcept;
-    Dot const* getSquare(std::uint32_t x, std::uint32_t y) const noexcept;
+    Dot* getDot(std::uint32_t x, std::uint32_t y) noexcept;
+    Dot const* getDot(std::uint32_t x, std::uint32_t y) const noexcept;
 
-    void setBox(std::uint32_t x, std::uint32_t y, Box box);
+    void setBox(std::uint32_t x, std::uint32_t y, Space box);
+
+    void moveDot(Coordinate original, Direction direction);
 
    private:
     std::uint32_t width_;
     std::uint32_t height_;
-    std::vector<Box> board_;
-    Box outOfBounds_;
+    std::vector<Space> board_;
+    Space outOfBounds_;
   };
 }  // namespace battle
 

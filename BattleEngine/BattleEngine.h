@@ -30,6 +30,8 @@ namespace battle {
     std::mt19937 generator_;
 
     std::array<std::uint32_t, 8> getSurrounding(std::uint32_t x, std::uint32_t y) const;
+
+    void execute(RunAction action, Coordinate space);
   };
 }  // namespace battle
 
