@@ -15,7 +15,7 @@ namespace battle {
    public:
     Screen(std::int32_t width, std::int32_t height);
 
-    void doPlayerSelection(std::function<void(std::string)> loaderFunc);
+    void doPlayerSelection(std::function<std::string(std::string)> loaderFunc);
     void render(const Board& board);
 
    private:

@@ -19,7 +19,9 @@ int main() {
 
   screen.doPlayerSelection([&](const std::string& filename) {
     auto player = battle::loadPlayer(filename);
+    auto name = player->getName();
     engine.addNewPlayer(std::move(player));
+    return name;
   });
 
   screen.render(engine.getCurrentBoard());

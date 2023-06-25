@@ -25,15 +25,20 @@ namespace battle {
       screen_(width_, height_) {
   }
 
-  void Screen::doPlayerSelection(std::function<void(std::string)> loaderFunc) {
+  void Screen::doPlayerSelection(std::function<std::string(std::string)> loaderFunc) {
     std::string dllFileName;
     std::string errorText;
+    int players = 0;
+    std::vector<ftxui::Element> currentPlayers;
     bool shouldBattle = false;
+
     ftxui::InputOption opt;
     opt.on_enter = [&]() {
       try {
-        loaderFunc(dllFileName);
+        auto name = loaderFunc(dllFileName);
         errorText = "";
+        ++players;
+        currentPlayers.push_back(ftxui::text(name + " (O)") | ftxui::bgcolor(COLORS[players]));
       } catch (...) {
         errorText = "Error loading player from: " + dllFileName;
       }
@@ -49,7 +54,11 @@ namespace battle {
       return ftxui::vbox({ftxui::text("Player Selction"),
                           ftxui::separator(),
                           dllInput->Render(),
-                          goButton->Render(),
+                          ftxui::hbox({ftxui::text("") | ftxui::flex,
+                                       goButton->Render()}),
+                          ftxui::separator(),
+                          ftxui::text("Players:"),
+                          ftxui::vbox(currentPlayers) | ftxui::borderLight,
                           ftxui::separator(),
                           ftxui::paragraph(errorText)}) |
              ftxui::border;
@@ -61,6 +70,11 @@ namespace battle {
     while (!shouldBattle) {
       loop.RunOnce();
     }
+
+    auto reset = selectionScreen.ResetPosition();
+    selectionScreen.Clear();
+    std::cout << reset;
+    selectionScreen.Print();
   }
 
   void Screen::render(const Board& board) {
