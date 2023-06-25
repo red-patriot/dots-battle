@@ -11,10 +11,6 @@ int main() {
   battle::Engine engine{6, 6};
   battle::Screen screen{6, 6};
 
-  engine.addNewPlayer(std::make_unique<battle::test::Test1>());
-  engine.addNewPlayer(std::make_unique<battle::test::Test1>());
-  engine.addNewPlayer(std::make_unique<battle::test::Test1>());
-  engine.addNewPlayer(std::make_unique<battle::test::Test1>());
   screen.render(engine.getCurrentBoard());
 
   while (engine.isRunning()) {
