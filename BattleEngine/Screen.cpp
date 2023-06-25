@@ -10,14 +10,22 @@
 
 namespace battle {
 
-  const std::array<ftxui::Color, 8> Screen::COLORS = {ftxui::Color::Black,
-                                                      ftxui::Color::Blue,
-                                                      ftxui::Color::Red,
-                                                      ftxui::Color::Green,
-                                                      ftxui::Color::Yellow,
-                                                      ftxui::Color::Magenta,
-                                                      ftxui::Color::Cyan,
-                                                      ftxui::Color::LightSlateGrey};
+  const std::array<ftxui::Color, 16> Screen::COLORS = {ftxui::Color::Black,
+                                                       ftxui::Color::Blue,
+                                                       ftxui::Color::Red,
+                                                       ftxui::Color::Green,
+                                                       ftxui::Color::Yellow,
+                                                       ftxui::Color::Magenta,
+                                                       ftxui::Color::Cyan,
+                                                       ftxui::Color::LightSlateGrey,
+                                                       ftxui::Color::SkyBlue1,
+                                                       ftxui::Color::DarkSeaGreen,
+                                                       ftxui::Color::DarkKhaki,
+                                                       ftxui::Color::DarkTurquoise,
+                                                       ftxui::Color::DarkOrange,
+                                                       ftxui::Color::DarkGoldenrod,
+                                                       ftxui::Color::DarkViolet,
+                                                       ftxui::Color::Pink1};
 
   Screen::Screen(std::int32_t width, std::int32_t height) :
       width_(width),

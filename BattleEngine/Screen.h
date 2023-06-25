@@ -19,7 +19,7 @@ namespace battle {
     void render(const Board& board);
 
    private:
-    static const std::array<ftxui::Color, 8> COLORS;
+    static const std::array<ftxui::Color, 16> COLORS;
 
     std::int32_t width_;
     std::int32_t height_;
