@@ -54,11 +54,11 @@ namespace battle {
       return ftxui::vbox({ftxui::text("Player Selction"),
                           ftxui::separator(),
                           dllInput->Render(),
-                          ftxui::hbox({ftxui::text("") | ftxui::flex,
-                                       goButton->Render()}),
                           ftxui::separator(),
                           ftxui::text("Players:"),
-                          ftxui::vbox(currentPlayers) | ftxui::borderLight,
+                          ftxui::vbox(currentPlayers) | ftxui::border,
+                          ftxui::hbox({ftxui::text("") | ftxui::flex,
+                                       goButton->Render()}),
                           ftxui::separator(),
                           ftxui::paragraph(errorText)}) |
              ftxui::border;
