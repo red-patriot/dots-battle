@@ -136,6 +136,7 @@
     <ClCompile Include="BattlingDots.cpp" />
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="EmptyDot.cpp" />
+    <ClCompile Include="LoadPlayer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Screen.cpp" />
     <ClCompile Include="TestDot.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="Board.h" />
     <ClInclude Include="EmptyDot.h" />
     <ClInclude Include="EngineUtility.h" />
+    <ClInclude Include="LoadPlayer.h" />
     <ClInclude Include="Screen.h" />
     <ClInclude Include="TestDot.h" />
   </ItemGroup>
