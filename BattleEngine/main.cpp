@@ -1,20 +1,25 @@
 #include "Screen.h"
 #include "BattleEngine.h"
-#include "BattlingDots.h"
 
 #include <chrono>
+#include <string>
+
+#include "LoadPlayer.h"
 
 using namespace std::chrono_literals;
-static const std::chrono::milliseconds loopTime = 250ms;
+static const std::chrono::milliseconds loopTime = 150ms;
 
 int main() {
-  battle::Engine engine{6, 6};
-  battle::Screen screen{6, 6};
+  battle::Engine engine{24, 12};
+  battle::Screen screen{24, 12};
 
-  engine.addNewPlayer(std::make_unique<battle::test::Test1>());
-  engine.addNewPlayer(std::make_unique<battle::test::Test1>());
-  engine.addNewPlayer(std::make_unique<battle::test::Test1>());
-  engine.addNewPlayer(std::make_unique<battle::test::Test1>());
+  screen.doPlayerSelection([&](const std::string& filename) {
+    auto player = battle::loadPlayer(filename);
+    auto name = player->getName();
+    engine.addNewPlayer(std::move(player));
+    return name;
+  });
+
   screen.render(engine.getCurrentBoard());
 
   while (engine.isRunning()) {

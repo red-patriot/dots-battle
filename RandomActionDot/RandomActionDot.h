@@ -1,9 +1,13 @@
-#ifndef DOTS_BATTLE_BATTLE_ENGINE_TEST_SQUARE_H
-#define DOTS_BATTLE_BATTLE_ENGINE_TEST_SQUARE_H
+#ifndef DOTS_BATTLE_RANDOM_ACTION_DOT_RANDOM_ACTION_DOT_H
+#define DOTS_BATTLE_RANDOM_ACTION_DOT_RANDOM_ACTION_DOT_H
 
 #include <Dot.h>
 
-class TestDot : public battle::Dot {
+#include "RandomActionDotExports.h"
+
+extern "C" std::unique_ptr<class battle::Dot> RANDOMDOT_API __stdcall createInitialDot() noexcept;
+
+class RANDOMDOT_API RandomActionDot : public battle::Dot {
  public:
   std::string getName() const noexcept override;
   void wasEliminated(std::int32_t team, std::int32_t killer,

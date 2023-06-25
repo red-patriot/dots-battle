@@ -4,9 +4,6 @@
     <Filter Include="Engine">
       <UniqueIdentifier>{69c7ef66-87f8-4d6d-9f1a-978e193761f1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="TestDots">
-      <UniqueIdentifier>{38e1bbf4-bdcc-44f6-a59f-41f87efd5236}</UniqueIdentifier>
-    </Filter>
     <Filter Include="IO">
       <UniqueIdentifier>{561d91aa-44da-43ae-8714-f0cde78baece}</UniqueIdentifier>
     </Filter>
@@ -14,9 +11,6 @@
   <ItemGroup>
     <ClCompile Include="Screen.cpp">
       <Filter>IO</Filter>
-    </ClCompile>
-    <ClCompile Include="TestDot.cpp">
-      <Filter>TestDots</Filter>
     </ClCompile>
     <ClCompile Include="BattleEngine.cpp">
       <Filter>Engine</Filter>
@@ -28,14 +22,11 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="BattlingDots.cpp">
-      <Filter>TestDots</Filter>
+    <ClCompile Include="LoadPlayer.cpp">
+      <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="TestDot.h">
-      <Filter>TestDots</Filter>
-    </ClInclude>
     <ClInclude Include="EmptyDot.h">
       <Filter>Engine</Filter>
     </ClInclude>
@@ -48,10 +39,10 @@
     <ClInclude Include="Screen.h">
       <Filter>IO</Filter>
     </ClInclude>
-    <ClInclude Include="BattlingDots.h">
-      <Filter>TestDots</Filter>
-    </ClInclude>
     <ClInclude Include="EngineUtility.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadPlayer.h">
       <Filter>Engine</Filter>
     </ClInclude>
   </ItemGroup>

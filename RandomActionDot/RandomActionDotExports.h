@@ -1,0 +1,10 @@
+#ifndef DOTS_BATTLE_RANDOM_ACTION_DOT_RANDOM_ACTION_DOT_EXPORTS_H
+#define DOTS_BATTLE_RANDOM_ACTION_DOT_RANDOM_ACTION_DOT_EXPORTS_H
+
+#ifdef RANDOMACTIONDOT_EXPORTS
+#define RANDOMDOT_API __declspec(dllexport)
+#else
+#define RANDOMDOT_API __declspec(dllimport)
+#endif
+
+#endif
