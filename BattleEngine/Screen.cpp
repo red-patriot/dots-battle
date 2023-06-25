@@ -75,6 +75,8 @@ namespace battle {
     selectionScreen.Clear();
     std::cout << reset;
     selectionScreen.Print();
+    reset = selectionScreen.ResetPosition();
+    std::cout << reset;
   }
 
   void Screen::render(const Board& board) {
