@@ -17,11 +17,14 @@ namespace battle {
     void render(const Board& board);
 
    private:
+    static const std::array<ftxui::Color, 8> COLORS;
+
     std::int32_t width_;
     std::int32_t height_;
 
     ftxui::Screen screen_;
-    
+
+    void drawBattlefield(Coordinate URS, ftxui::Screen& drawArea, const Board& board);
   };
 }  // namespace battle
 

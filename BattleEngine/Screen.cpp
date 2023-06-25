@@ -7,26 +7,32 @@
 
 namespace battle {
 
+  const std::array<ftxui::Color, 8> Screen::COLORS = {ftxui::Color::Black,
+                                                      ftxui::Color::Blue,
+                                                      ftxui::Color::Red,
+                                                      ftxui::Color::Green,
+                                                      ftxui::Color::Yellow,
+                                                      ftxui::Color::Magenta,
+                                                      ftxui::Color::Cyan,
+                                                      ftxui::Color::LightSlateGrey};
+
   Screen::Screen(std::int32_t width, std::int32_t height) :
       width_(width),
       height_(height),
-      screen_(width_, height_) { }
+      screen_(width_, height_) {
+  }
 
   void Screen::render(const Board& board) {
-    static const std::array<ftxui::Color, 8> COLORS = {ftxui::Color::Black,
-                                                       ftxui::Color::Blue,
-                                                       ftxui::Color::Red,
-                                                       ftxui::Color::Green,
-                                                       ftxui::Color::Yellow,
-                                                       ftxui::Color::Magenta,
-                                                       ftxui::Color::Cyan,
-                                                       ftxui::Color::LightSlateGrey};
-
     auto reset = screen_.ResetPosition();
-    screen_.Clear();
+    drawBattlefield({0, 0}, screen_, board);
 
-    for (std::int32_t y = 0; y < height_; ++y) {
-      for (std::int32_t x = 0; x < width_; ++x) {
+    std::cout << reset;
+    screen_.Print();
+  }
+
+  void Screen::drawBattlefield(Coordinate URS, ftxui::Screen& drawArea, const Board& board) {
+    for (std::int32_t y = URS.y; y < height_ + URS.y; ++y) {
+      for (std::int32_t x = URS.x; x < width_ + URS.x; ++x) {
         std::int32_t team = board.getTeam(Coordinate{x, y});
         if (team) {
           ftxui::Color color = COLORS[team];
@@ -41,9 +47,6 @@ namespace battle {
         }
       }
     }
-
-    std::cout << reset;
-    screen_.Print();
   }
 
 }  // namespace battle
