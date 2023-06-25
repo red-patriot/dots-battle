@@ -51,14 +51,14 @@ namespace battle {
                                                         goButton});
 
     auto renderer = ftxui::Renderer(comp, [&]() {
-      return ftxui::vbox({ftxui::text("Player Selction"),
+      return ftxui::vbox({ftxui::text("Player Selection"),
                           ftxui::separator(),
                           dllInput->Render(),
-                          ftxui::hbox({ftxui::text("") | ftxui::flex,
-                                       goButton->Render()}),
                           ftxui::separator(),
                           ftxui::text("Players:"),
-                          ftxui::vbox(currentPlayers) | ftxui::borderLight,
+                          ftxui::vbox(currentPlayers) | ftxui::border,
+                          ftxui::hbox({ftxui::text("") | ftxui::flex,
+                                       goButton->Render()}),
                           ftxui::separator(),
                           ftxui::paragraph(errorText)}) |
              ftxui::border;
