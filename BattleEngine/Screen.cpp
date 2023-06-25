@@ -2,6 +2,9 @@
 
 #include <iostream>
 
+#include <ftxui/component/component.hpp>
+#include <ftxui/component/loop.hpp>
+#include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
 
@@ -20,6 +23,44 @@ namespace battle {
       width_(width),
       height_(height),
       screen_(width_, height_) {
+  }
+
+  void Screen::doPlayerSelection(std::function<void(std::string)> loaderFunc) {
+    std::string dllFileName;
+    std::string errorText;
+    bool shouldBattle = false;
+    ftxui::InputOption opt;
+    opt.on_enter = [&]() {
+      try {
+        loaderFunc(dllFileName);
+        errorText = "";
+      } catch (...) {
+        errorText = "Error loading player from: " + dllFileName;
+      }
+    };
+
+    ftxui::Component dllInput = ftxui::Input(&dllFileName, "player", opt);
+    ftxui::Component goButton = ftxui::Button("Battle", [&]() { shouldBattle = true; });
+
+    ftxui::Component comp = ftxui::Container::Vertical({dllInput,
+                                                        goButton});
+
+    auto renderer = ftxui::Renderer(comp, [&]() {
+      return ftxui::vbox({ftxui::text("Player Selction"),
+                          ftxui::separator(),
+                          dllInput->Render(),
+                          goButton->Render(),
+                          ftxui::separator(),
+                          ftxui::paragraph(errorText)}) |
+             ftxui::border;
+    });
+
+    auto selectionScreen = ftxui::ScreenInteractive::FitComponent();
+
+    ftxui::Loop loop(&selectionScreen, renderer);
+    while (!shouldBattle) {
+      loop.RunOnce();
+    }
   }
 
   void Screen::render(const Board& board) {

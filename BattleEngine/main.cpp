@@ -13,16 +13,14 @@
 using namespace std::chrono_literals;
 static const std::chrono::milliseconds loopTime = 250ms;
 
-
-
 int main() {
   battle::Engine engine{6, 6};
   battle::Screen screen{6, 6};
 
-  std::string debugFilename = "C:\\Users\\bltan\\source\\repos\\DotsBattle\\x64\\Debug\\RandomActionDot.dll";
-  
-  auto player1 = battle::loadPlayer(debugFilename);
-  engine.addNewPlayer(std::move(player1));
+  screen.doPlayerSelection([&](const std::string& filename) {
+    auto player = battle::loadPlayer(filename);
+    engine.addNewPlayer(std::move(player));
+  });
 
   screen.render(engine.getCurrentBoard());
 

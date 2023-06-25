@@ -1,6 +1,7 @@
 #ifndef DOTS_BATTLE_BATTLE_ENGINE_SCREEN_H
 #define DOTS_BATTLE_BATTLE_ENGINE_SCREEN_H
 
+#include <functional>
 #include <span>
 #include <cstdint>
 
@@ -14,6 +15,7 @@ namespace battle {
    public:
     Screen(std::int32_t width, std::int32_t height);
 
+    void doPlayerSelection(std::function<void(std::string)> loaderFunc);
     void render(const Board& board);
 
    private:
