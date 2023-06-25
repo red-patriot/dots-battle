@@ -147,7 +147,7 @@ namespace battle {
   }
 
   void Engine::doAttack(Coordinate attacker, Coordinate target) {
-    if (board_.getTeam(target)) {
+    if (board_.getTeam(target) && board_.getTeam(attacker) != board_.getTeam(target)) {
       auto targetDot = board_.getDot(target);
       targetDot->wasEliminated(board_.getTeam(target),
                                board_.getTeam(attacker), target.x, target.y);
@@ -163,7 +163,7 @@ namespace battle {
                           {.team = board_.getTeam(parent),
                            .dot = std::move(replicated)})) {
         markMoved(birthplace);
-        ++teamControl_[board_.getTeam(parent)];
+        ++teamControl_[board_.getTeam(parent)]; 
       }
     }
   }

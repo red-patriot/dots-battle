@@ -8,7 +8,7 @@
 #include <utility>
 
 namespace battle {
-  enum class Direction : std::int32_t {
+  enum Direction : size_t {
     NW = 0,
     N = 1,
     NE = 2,

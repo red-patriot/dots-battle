@@ -15,19 +15,23 @@ namespace battle::test {
     static std::uniform_int_distribution actDist(0, 3);
     static std::uniform_int_distribution dirDist(0, 7);
 
-    battle::RunAction::Type action = static_cast<::battle::RunAction::Type>(actDist(generator));
-    battle::Direction direction = static_cast<::battle::Direction>(dirDist(generator));
+    battle::RunAction::Type action = static_cast<battle::RunAction::Type>(actDist(generator));
+    battle::Direction direction = static_cast<battle::Direction>(dirDist(generator));
+
+    if (action != RunAction::ATTACK && view[direction]) {
+      action = RunAction::WAIT;
+    }
     switch (action) {
-      case battle::RunAction::Type::WAIT:
+      case battle::RunAction::WAIT:
         return battle::RunAction{.type = battle::RunAction::WAIT};
         break;
-      case battle::RunAction::Type::MOVE:
+      case battle::RunAction::MOVE:
         return battle::RunAction{.type = battle::RunAction::MOVE,
                                  .direction = direction};
-      case battle::RunAction::Type::ATTACK:
+      case battle::RunAction::ATTACK:
         return battle::RunAction{.type = battle::RunAction::ATTACK,
                                  .direction = direction};
-      case battle::RunAction::Type::REPLICATE:
+      case battle::RunAction::REPLICATE:
         return battle::RunAction{.type = battle::RunAction::REPLICATE,
                                  .direction = direction,
                                  .replicated = std::make_unique<Test1>()};
