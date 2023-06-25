@@ -13,6 +13,8 @@ int main() {
 
   engine.addNewPlayer(std::make_unique<battle::test::Test1>());
   engine.addNewPlayer(std::make_unique<battle::test::Test1>());
+  engine.addNewPlayer(std::make_unique<battle::test::Test1>());
+  engine.addNewPlayer(std::make_unique<battle::test::Test1>());
   screen.render(engine.getCurrentBoard());
 
   while (engine.isRunning()) {

@@ -19,7 +19,15 @@ namespace battle {
   }
 
   bool Engine::isRunning() {
-    return true;
+    int teams = 0;
+    for (std::int32_t y = 0; y < board_.height(); ++y) {
+      for (std::int32_t x = 0; x < board_.width(); ++x) {
+        if (board_.getTeam(Coordinate{x, y}) && ++teams >= 2) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   void Engine::addNewPlayer(std::unique_ptr<Dot> newPlayer) {
@@ -98,19 +106,41 @@ namespace battle {
   }
 
   void Engine::execute(RunAction action, Coordinate space) {
-    using std::swap;
     switch (action.type) {
       case RunAction::MOVE:
-        auto newSpace = calculateMoveCoord(space, action.direction);
-        if (board_.moveDot(space, newSpace)) {
-          swap(moveCounters_[board_.boardIndex(space)],
-               moveCounters_[board_.boardIndex(newSpace)]);
+        {
+          auto newSpace = calculateMoveCoord(space, action.direction);
+          doMove(space, newSpace);
+          break;
         }
-        break;
+      case RunAction::ATTACK:
+        {
+          auto target = calculateMoveCoord(space, action.direction);
+          doAttack(space, target);
+          break;
+        }
       default:
         // IMPOSSIBLE?
-        // TODO: Remove this case once all actions are implemeted
+        // TODO: Remove this case once all actions are implemented
         throw std::exception{};
     }
+  }
+
+  void Engine::doMove(Coordinate from, Coordinate to) {
+    using std::swap;
+    if (board_.moveDot(from, to)) {
+      swap(moveCounters_[board_.boardIndex(from)],
+           moveCounters_[board_.boardIndex(to)]);
+    }
+  }
+
+  void Engine::doAttack(Coordinate attacker, Coordinate target) {
+    if (board_.getTeam(target)) {
+      auto targetDot = board_.getDot(target);
+      targetDot->wasEliminated(board_.getTeam(target),
+                               board_.getTeam(attacker), target.x, target.y);
+      board_.setSpace(target, {.team = 0, .dot = std::make_unique<EmptyDot>()});
+    }
+    doMove(attacker, target);
   }
 }  // namespace battle

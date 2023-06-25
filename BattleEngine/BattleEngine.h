@@ -36,6 +36,9 @@ namespace battle {
     void markMoved(Coordinate space) noexcept;
 
     void execute(RunAction action, Coordinate space);
+
+    void doMove(Coordinate space, Coordinate newSpace);
+    void doAttack(Coordinate attacker, Coordinate target);
   };
 }  // namespace battle
 

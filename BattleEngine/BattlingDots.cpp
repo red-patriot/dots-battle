@@ -17,7 +17,7 @@ namespace battle::test {
 
     battle::RunAction::Type action = static_cast<::battle::RunAction::Type>(actDist(generator));
     battle::Direction direction = static_cast<::battle::Direction>(dirDist(generator));
-    return ::battle::RunAction{.type = ::battle::RunAction::MOVE,
+    return ::battle::RunAction{.type = ::battle::RunAction::ATTACK,
                                .direction = direction};
   }
 
