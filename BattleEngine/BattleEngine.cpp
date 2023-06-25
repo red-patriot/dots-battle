@@ -19,7 +19,7 @@ namespace battle {
     teamControl_.push_back(0);
   }
 
-  bool Engine::isRunning() {
+  bool Engine::isRunning() const noexcept {
     auto teams = std::ranges::count_if(teamControl_, [](std::int32_t control) -> bool {
       return control > 0;
     });
@@ -79,6 +79,23 @@ namespace battle {
 
   const Board& Engine::getCurrentBoard() const noexcept {
     return board_;
+  }
+
+  WinnerData Engine::getWinner() const noexcept {
+    if (isRunning()) {
+      return {};
+    }
+    WinnerData ret;
+
+    for (auto y = 0; y != board_.height(); ++y) {
+      for (auto x = 0; x != board_.width(); ++x) {
+        if (board_.getTeam(Coordinate{x, y})) {
+          ret.team = board_.getTeam(Coordinate{x, y});
+          ret.teamName = board_.getDot(Coordinate{x, y})->getName();
+          return ret;
+        }
+      }
+    }
   }
 
   std::array<std::int32_t, 8> Engine::getSurrounding(std::int32_t x, std::int32_t y) const {
@@ -163,7 +180,7 @@ namespace battle {
                           {.team = board_.getTeam(parent),
                            .dot = std::move(replicated)})) {
         markMoved(birthplace);
-        ++teamControl_[board_.getTeam(parent)]; 
+        ++teamControl_[board_.getTeam(parent)];
       }
     }
   }

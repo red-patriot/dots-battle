@@ -17,6 +17,7 @@ namespace battle {
 
     void doPlayerSelection(std::function<std::string(std::string)> loaderFunc);
     void render(const Board& board);
+    void displayGameOver(std::int32_t team, const std::string& teamName);
 
    private:
     static const std::array<ftxui::Color, 16> COLORS;

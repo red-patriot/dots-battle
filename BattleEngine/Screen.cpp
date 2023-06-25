@@ -99,6 +99,24 @@ namespace battle {
     screen_.Print();
   }
 
+  void Screen::displayGameOver(std::int32_t team, const std::string& teamName) {
+    auto reset = screen_.ResetPosition();
+    std::cout << reset;
+    screen_.Clear();
+    screen_.Print();
+    reset = screen_.ResetPosition();
+    std::cout << reset;
+
+    ftxui::Element doc = ftxui::vbox({ftxui::text("GAME OVER!") | ftxui::center,
+                                      ftxui::text("WINNER:") | ftxui::center,
+                                      ftxui::text(std::format("{} - {}", team, teamName)) |
+                                          ftxui::color(COLORS[team]) | ftxui::center}) |
+                         ftxui::borderDouble;
+    screen_ = ftxui::Screen::Create(ftxui::Dimension::Fit(doc), ftxui::Dimension::Fit(doc));
+    ftxui::Render(screen_, doc);
+    screen_.Print();
+  }
+
   void Screen::drawBattlefield(Coordinate URS, ftxui::Screen& drawArea, const Board& board) {
     for (std::int32_t y = URS.y; y < height_ + URS.y; ++y) {
       for (std::int32_t x = URS.x; x < width_ + URS.x; ++x) {

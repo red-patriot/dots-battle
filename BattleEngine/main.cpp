@@ -10,8 +10,8 @@ using namespace std::chrono_literals;
 static const std::chrono::milliseconds loopTime = 150ms;
 
 int main() {
-  battle::Engine engine{24, 12};
-  battle::Screen screen{24, 12};
+  battle::Engine engine{6, 6};
+  battle::Screen screen{6, 6};
 
   screen.doPlayerSelection([&](const std::string& filename) {
     auto player = battle::loadPlayer(filename);
@@ -28,6 +28,9 @@ int main() {
     screen.render(engine.getCurrentBoard());
     std::this_thread::sleep_until(now + loopTime);
   }
+
+  auto winner = engine.getWinner();
+  screen.displayGameOver(winner.team, winner.teamName);
 
   return 0;
 }
