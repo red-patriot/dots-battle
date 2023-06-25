@@ -35,6 +35,10 @@ namespace battle {
     ftxui::InputOption opt;
     opt.on_enter = [&]() {
       try {
+        if (players >= COLORS.size() - 1) {
+          errorText = std::format("Error: the maximum number of players is {}", COLORS.size());
+          return;
+        }
         auto name = loaderFunc(dllFileName);
         errorText = "";
         ++players;

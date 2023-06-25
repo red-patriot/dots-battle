@@ -4,9 +4,6 @@
 #include <chrono>
 #include <string>
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-
 #include "LoadPlayer.h"
 
 using namespace std::chrono_literals;
