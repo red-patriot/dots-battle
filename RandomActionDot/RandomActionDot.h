@@ -5,7 +5,7 @@
 
 #include "RandomActionDotExports.h"
 
-extern "C" std::unique_ptr<class battle::Dot> RANDOMDOT_API createInitialDot() noexcept;
+extern "C" std::unique_ptr<class battle::Dot> RANDOMDOT_API __stdcall createInitialDot() noexcept;
 
 class RANDOMDOT_API RandomActionDot : public battle::Dot {
  public:
