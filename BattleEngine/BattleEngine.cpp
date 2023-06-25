@@ -16,18 +16,14 @@ namespace battle {
       moveCounters_(width * height, 0) {
     std::random_device rd;
     generator_ = std::mt19937{rd()};
+    teamControl_.push_back(0);
   }
 
   bool Engine::isRunning() {
-    int teams = 0;
-    for (std::int32_t y = 0; y < board_.height(); ++y) {
-      for (std::int32_t x = 0; x < board_.width(); ++x) {
-        if (board_.getTeam(Coordinate{x, y}) && ++teams >= 2) {
-          return true;
-        }
-      }
-    }
-    return false;
+    auto teams = std::ranges::count_if(teamControl_, [](std::int32_t control) -> bool {
+      return control > 0;
+    });
+    return teams >= 2;
   }
 
   void Engine::addNewPlayer(std::unique_ptr<Dot> newPlayer) {
@@ -51,6 +47,7 @@ namespace battle {
 
     ++currentTeam_;
     board_.setSpace(Coordinate{x, y}, {.team = currentTeam_, .dot = std::move(newPlayer)});
+    teamControl_.push_back(1);
   }
 
   void Engine::runOnce() {
@@ -98,15 +95,24 @@ namespace battle {
   }
 
   bool Engine::hasMoved(Coordinate space) const noexcept {
-    return moveCounters_[board_.boardIndex(space)] == turnCounter_;
+    auto& [x, y] = space;
+    if (y >= 0 && y < board_.height() && x >= 0 && x < board_.width()) {
+      return moveCounters_[board_.boardIndex(space)] == turnCounter_;
+    }
+    return true;
   }
 
   void Engine::markMoved(Coordinate space) noexcept {
-    moveCounters_[board_.boardIndex(space)] = turnCounter_;
+    auto& [x, y] = space;
+    if (y >= 0 && y < board_.height() && x >= 0 && x < board_.width()) {
+      moveCounters_[board_.boardIndex(space)] = turnCounter_;
+    }
   }
 
   void Engine::execute(RunAction action, Coordinate space) {
     switch (action.type) {
+      case RunAction::WAIT:
+        break;
       case RunAction::MOVE:
         {
           auto newSpace = calculateMoveCoord(space, action.direction);
@@ -117,6 +123,12 @@ namespace battle {
         {
           auto target = calculateMoveCoord(space, action.direction);
           doAttack(space, target);
+          break;
+        }
+      case RunAction::REPLICATE:
+        {
+          auto birthplace = calculateMoveCoord(space, action.direction);
+          doReplicate(space, std::move(action.replicated), birthplace);
           break;
         }
       default:
@@ -139,8 +151,20 @@ namespace battle {
       auto targetDot = board_.getDot(target);
       targetDot->wasEliminated(board_.getTeam(target),
                                board_.getTeam(attacker), target.x, target.y);
+      --teamControl_[board_.getTeam(target)];
       board_.setSpace(target, {.team = 0, .dot = std::make_unique<EmptyDot>()});
     }
     doMove(attacker, target);
+  }
+
+  void Engine::doReplicate(Coordinate parent, std::unique_ptr<Dot> replicated, Coordinate birthplace) {
+    if (!board_.getTeam(birthplace)) {
+      if (board_.setSpace(birthplace,
+                          {.team = board_.getTeam(parent),
+                           .dot = std::move(replicated)})) {
+        markMoved(birthplace);
+        ++teamControl_[board_.getTeam(parent)];
+      }
+    }
   }
 }  // namespace battle

@@ -41,8 +41,13 @@ namespace battle {
   Dot const* Board::getDot(Coordinate coord) const noexcept {
     return getSpace(coord).dot.get();
   }
-  void Board::setSpace(Coordinate coord, Space box) {
-    getSpace(coord) = std::move(box);
+  bool Board::setSpace(Coordinate coord, Space box) {
+    const auto& [x, y] = coord;
+    if (y >= 0 && y < height_ && x >= 0 && x < width_) {
+      getSpace(coord) = std::move(box);
+      return true;
+    }
+    return false;
   }
   bool Board::moveDot(Coordinate from, Coordinate to) {
     // Move can only move to an unoccupied coord in the board bounds,

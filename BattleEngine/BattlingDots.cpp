@@ -17,8 +17,24 @@ namespace battle::test {
 
     battle::RunAction::Type action = static_cast<::battle::RunAction::Type>(actDist(generator));
     battle::Direction direction = static_cast<::battle::Direction>(dirDist(generator));
-    return ::battle::RunAction{.type = ::battle::RunAction::ATTACK,
-                               .direction = direction};
+    switch (action) {
+      case battle::RunAction::Type::WAIT:
+        return battle::RunAction{.type = battle::RunAction::WAIT};
+        break;
+      case battle::RunAction::Type::MOVE:
+        return battle::RunAction{.type = battle::RunAction::MOVE,
+                                 .direction = direction};
+      case battle::RunAction::Type::ATTACK:
+        return battle::RunAction{.type = battle::RunAction::ATTACK,
+                                 .direction = direction};
+      case battle::RunAction::Type::REPLICATE:
+        return battle::RunAction{.type = battle::RunAction::REPLICATE,
+                                 .direction = direction,
+                                 .replicated = std::make_unique<Test1>()};
+        break;
+      default:
+        break;
+    }
   }
 
   std::string Test2::getName() const noexcept {

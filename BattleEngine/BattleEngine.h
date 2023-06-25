@@ -28,6 +28,7 @@ namespace battle {
     Board board_;
     std::uint8_t turnCounter_ = -1;
     std::vector<std::uint8_t> moveCounters_;
+    std::vector<std::int32_t> teamControl_;
     std::int32_t currentTeam_ = 0;
     std::mt19937 generator_;
 
@@ -39,6 +40,7 @@ namespace battle {
 
     void doMove(Coordinate space, Coordinate newSpace);
     void doAttack(Coordinate attacker, Coordinate target);
+    void doReplicate(Coordinate parent, std::unique_ptr<Dot> replicated, Coordinate birthplace);
   };
 }  // namespace battle
 

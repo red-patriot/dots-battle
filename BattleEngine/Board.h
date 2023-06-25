@@ -33,7 +33,7 @@ namespace battle {
     Dot* getDot(Coordinate coord) noexcept;
     Dot const* getDot(Coordinate coord) const noexcept;
 
-    void setSpace(Coordinate coord, Space box);
+    bool setSpace(Coordinate coord, Space box);
 
     bool moveDot(Coordinate from, Coordinate to);
 
