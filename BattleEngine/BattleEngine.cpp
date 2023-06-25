@@ -163,7 +163,7 @@ namespace battle {
                           {.team = board_.getTeam(parent),
                            .dot = std::move(replicated)})) {
         markMoved(birthplace);
-        ++teamControl_[board_.getTeam(parent)];
+        ++teamControl_[board_.getTeam(parent)]; 
       }
     }
   }
