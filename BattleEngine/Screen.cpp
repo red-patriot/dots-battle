@@ -8,6 +8,8 @@
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
 
+using namespace ftxui;
+
 namespace battle {
 
   const std::array<ftxui::Color, 16> Screen::COLORS = {ftxui::Color::Black,
@@ -30,8 +32,7 @@ namespace battle {
   Screen::Screen(std::int32_t width, std::int32_t height) :
       width_(width),
       height_(height),
-      screen_(width_, height_) {
-  }
+      screen_(width_, height_) { }
 
   void Screen::doPlayerSelection(std::function<std::string(std::string)> loaderFunc) {
     std::string dllFileName;
@@ -93,7 +94,23 @@ namespace battle {
 
   void Screen::render(const Board& board, const std::vector<std::int32_t>& teamControls) {
     auto reset = screen_.ResetPosition();
-    drawBattlefield({0, 0}, screen_, board);
+    Element doc = vbox({text("Dots Battle"),
+                        separator(),
+                        hbox({window(text(""), text("")) |
+                                  size(WIDTH, EQUAL, width_ + 2) |
+                                  size(HEIGHT, EQUAL, height_ + 2),
+                              text("TODO: STATS")})}) |
+                  border;
+
+    screen_ = ftxui::Screen::Create(Dimension::Fit(doc));
+<<<<<<< HEAD
+    Render(screen_, doc);
+=======
+    ftxui::Render(screen_, doc);
+    // KLUDGE: I can't find a better way to do this, but I wish there was a better
+    // way than using hardcoded indicies.
+>>>>>>> 06c5600 (deleteme!)
+    drawBattlefield({2, 4}, screen_, board);
 
     std::cout << reset;
     screen_.Print();
