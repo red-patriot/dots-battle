@@ -10,8 +10,8 @@ using namespace std::chrono_literals;
 static const std::chrono::milliseconds loopTime = 150ms;
 
 int main() {
-  battle::Engine engine{6, 6};
-  battle::Screen screen{6, 6};
+  battle::Engine engine{24, 12};
+  battle::Screen screen{24, 12};
 
   screen.doPlayerSelection([&](const std::string& filename) {
     auto player = battle::loadPlayer(filename);
