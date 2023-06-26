@@ -81,6 +81,10 @@ namespace battle {
     return board_;
   }
 
+  const std::vector<std::int32_t>& Engine::getTeamControls() const noexcept {
+    return teamControl_;
+  }
+
   WinnerData Engine::getWinner() const noexcept {
     if (isRunning()) {
       return {};
@@ -97,6 +101,7 @@ namespace battle {
       }
     }
   }
+
 
   std::array<std::int32_t, 8> Engine::getSurrounding(std::int32_t x, std::int32_t y) const {
     std::array<std::int32_t, 8> ret{

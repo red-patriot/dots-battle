@@ -91,7 +91,7 @@ namespace battle {
     std::cout << reset;
   }
 
-  void Screen::render(const Board& board) {
+  void Screen::render(const Board& board, const std::vector<std::int32_t>& teamControls) {
     auto reset = screen_.ResetPosition();
     drawBattlefield({0, 0}, screen_, board);
 

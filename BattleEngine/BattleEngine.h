@@ -29,6 +29,7 @@ namespace battle {
 
 
     const Board& getCurrentBoard() const noexcept;
+    const std::vector<std::int32_t>& getTeamControls() const noexcept;
     WinnerData getWinner() const noexcept;
 
    private:
