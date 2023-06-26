@@ -27,7 +27,7 @@ namespace battle {
 
     ftxui::Screen screen_;
 
-    void drawBattlefield(Coordinate URS, ftxui::Screen& drawArea, const Board& board);
+    void drawBattlefield(Coordinate offset, ftxui::Screen& drawArea, const Board& board);
   };
 }  // namespace battle
 

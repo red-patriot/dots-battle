@@ -117,18 +117,18 @@ namespace battle {
     screen_.Print();
   }
 
-  void Screen::drawBattlefield(Coordinate URS, ftxui::Screen& drawArea, const Board& board) {
-    for (std::int32_t y = URS.y; y < height_ + URS.y; ++y) {
-      for (std::int32_t x = URS.x; x < width_ + URS.x; ++x) {
+  void Screen::drawBattlefield(Coordinate offset, ftxui::Screen& drawArea, const Board& board) {
+    for (std::int32_t y = 0; y < height_; ++y) {
+      for (std::int32_t x = 0; x < width_; ++x) {
         std::int32_t team = board.getTeam(Coordinate{x, y});
         if (team) {
           ftxui::Color color = COLORS[team];
-          auto& px = screen_.PixelAt(x, y);
+          auto& px = screen_.PixelAt(x + offset.x, y + offset.y);
           px.character = "O";
           px.foreground_color = color;
         } else {
           ftxui::Color color = ftxui::Color::White;
-          auto& px = screen_.PixelAt(x, y);
+          auto& px = screen_.PixelAt(x + offset.x, y + offset.y);
           px.character = "+";
           px.foreground_color = color;
         }
