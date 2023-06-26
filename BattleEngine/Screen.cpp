@@ -95,6 +95,7 @@ namespace battle {
   void Screen::render(const Board& board, const std::vector<std::int32_t>& teamControls) {
     auto reset = screen_.ResetPosition();
     Elements stats;
+    stats.push_back(separator());
     for (size_t i = 1; i < teamControls.size(); ++i) {
       stats.push_back(text(std::format("{} dots", teamControls[i])) | color(COLORS[i]));
     }
@@ -108,17 +109,10 @@ namespace battle {
                   border;
 
     screen_ = ftxui::Screen::Create(Dimension::Fit(doc));
-<<<<<<< HEAD
-<<<<<<< HEAD
-    Render(screen_, doc);
-=======
     ftxui::Render(screen_, doc);
     // KLUDGE: I can't find a better way to do this, but I wish there was a better
     // way than using hardcoded indicies.
->>>>>>> 06c5600 (deleteme!)
-=======
     ftxui::Render(screen_, doc);
->>>>>>> ea07cb8 (feat: Implement status window)
     drawBattlefield({2, 4}, screen_, board);
 
     std::cout << reset;
