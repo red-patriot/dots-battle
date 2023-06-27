@@ -150,6 +150,7 @@
     <ClInclude Include="EmptyDot.h" />
     <ClInclude Include="EngineUtility.h" />
     <ClInclude Include="LoadPlayer.h" />
+    <ClInclude Include="ReplicatingDot.h" />
     <ClInclude Include="Screen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -41,6 +41,13 @@ namespace battle {
   Dot const* Board::getDot(Coordinate coord) const noexcept {
     return getSpace(coord).dot.get();
   }
+  Board::Space Board::removeDot(Coordinate coord) {
+    using std::swap;
+    Space ret = {.team = 0,
+                 .dot = std::make_unique<EmptyDot>()};
+    swap(ret, getSpace(coord));
+    return ret;
+  }
   bool Board::setSpace(Coordinate coord, Space box) {
     const auto& [x, y] = coord;
     if (y >= 0 && y < height_ && x >= 0 && x < width_) {

@@ -19,6 +19,8 @@ namespace battle {
   };
 
   class Engine {
+    friend class ReplicatingDot;
+
    public:
     Engine(std::int32_t width, std::int32_t height);
 
@@ -26,7 +28,6 @@ namespace battle {
 
     void addNewPlayer(std::unique_ptr<Dot> newPlayer);
     void runOnce();
-
 
     const Board& getCurrentBoard() const noexcept;
     const std::vector<std::int32_t>& getTeamControls() const noexcept;
@@ -48,7 +49,10 @@ namespace battle {
 
     void doMove(Coordinate space, Coordinate newSpace);
     void doAttack(Coordinate attacker, Coordinate target);
-    void doReplicate(Coordinate parent, std::unique_ptr<Dot> replicated, Coordinate birthplace);
+    void startReplicate(Coordinate location,
+                        std::unique_ptr<Dot> child, Direction dir);
+    void doReplicate(std::unique_ptr<Dot> parent, Coordinate location,
+                     std::unique_ptr<Dot> child, Direction dir);
   };
 }  // namespace battle
 

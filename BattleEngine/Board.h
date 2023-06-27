@@ -32,6 +32,7 @@ namespace battle {
     std::int32_t getTeam(Coordinate coord) const noexcept;
     Dot* getDot(Coordinate coord) noexcept;
     Dot const* getDot(Coordinate coord) const noexcept;
+    Space removeDot(Coordinate coord);
 
     bool setSpace(Coordinate coord, Space box);
 
