@@ -8,6 +8,7 @@
 
 #include "EmptyDot.h"
 #include "EngineUtility.h"
+#include "ReplicatingDot.h"
 
 namespace battle {
 
@@ -102,7 +103,6 @@ namespace battle {
     }
   }
 
-
   std::array<std::int32_t, 8> Engine::getSurrounding(std::int32_t x, std::int32_t y) const {
     std::array<std::int32_t, 8> ret{
         board_.getTeam(Coordinate{x - 1, y - 1}),
@@ -134,6 +134,7 @@ namespace battle {
   void Engine::execute(RunAction action, Coordinate space) {
     switch (action.type) {
       case RunAction::WAIT:
+        markMoved(space);
         break;
       case RunAction::MOVE:
         {
@@ -149,8 +150,7 @@ namespace battle {
         }
       case RunAction::REPLICATE:
         {
-          auto birthplace = calculateMoveCoord(space, action.direction);
-          doReplicate(space, std::move(action.replicated), birthplace);
+          startReplicate(space, std::move(action.replicated), action.direction);
           break;
         }
       default:
@@ -179,14 +179,28 @@ namespace battle {
     doMove(attacker, target);
   }
 
-  void Engine::doReplicate(Coordinate parent, std::unique_ptr<Dot> replicated, Coordinate birthplace) {
+  void Engine::startReplicate(Coordinate location,
+                              std::unique_ptr<Dot> child, Direction dir) {
+    auto parent = board_.removeDot(location);
+    std::unique_ptr<Dot> wrapper = std::make_unique<ReplicatingDot>(std::move(parent.dot),
+                                                                    std::move(child),
+                                                                    dir, this);
+    board_.setSpace(location, {.team = parent.team, .dot = std::move(wrapper)});
+    markMoved(location);
+  }
+
+  void Engine::doReplicate(std::unique_ptr<Dot> parent, Coordinate location,
+                           std::unique_ptr<Dot> child, Direction dir) {
+    board_.setSpace(location, {.team = board_.getTeam(location),
+                               .dot = std::move(parent)});
+    auto birthplace = calculateMoveCoord(location, dir);
     if (!board_.getTeam(birthplace)) {
-      if (board_.setSpace(birthplace,
-                          {.team = board_.getTeam(parent),
-                           .dot = std::move(replicated)})) {
-        markMoved(birthplace);
-        ++teamControl_[board_.getTeam(parent)];
-      }
+      board_.setSpace(birthplace, {.team = board_.getTeam(location),
+                                   .dot = std::move(child)});
+
+      markMoved(birthplace);
+      ++teamControl_[board_.getTeam(location)];
     }
   }
+
 }  // namespace battle

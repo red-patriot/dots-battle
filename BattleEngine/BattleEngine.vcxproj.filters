@@ -45,5 +45,8 @@
     <ClInclude Include="LoadPlayer.h">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="ReplicatingDot.h">
+      <Filter>Engine</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
