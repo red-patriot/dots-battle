@@ -66,7 +66,7 @@ namespace battle {
     auto renderer = ftxui::Renderer(comp, [&]() {
       return ftxui::vbox({ftxui::text("Player Selection"),
                           ftxui::separator(),
-                          dllInput->Render(),
+                          dllInput->Render() | size(WIDTH, EQUAL, 50),
                           ftxui::separator(),
                           ftxui::text("Players:"),
                           ftxui::vbox(currentPlayers) | ftxui::border,
