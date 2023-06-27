@@ -8,6 +8,8 @@
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
 
+using namespace ftxui;
+
 namespace battle {
 
   const std::array<ftxui::Color, 16> Screen::COLORS = {ftxui::Color::Black,
@@ -30,8 +32,7 @@ namespace battle {
   Screen::Screen(std::int32_t width, std::int32_t height) :
       width_(width),
       height_(height),
-      screen_(width_, height_) {
-  }
+      screen_(width_, height_) { }
 
   void Screen::doPlayerSelection(std::function<std::string(std::string)> loaderFunc) {
     std::string dllFileName;
@@ -91,26 +92,63 @@ namespace battle {
     std::cout << reset;
   }
 
-  void Screen::render(const Board& board) {
+  void Screen::render(const Board& board, const std::vector<std::int32_t>& teamControls) {
     auto reset = screen_.ResetPosition();
-    drawBattlefield({0, 0}, screen_, board);
+    Elements stats;
+    stats.push_back(separator());
+    for (size_t i = 1; i < teamControls.size(); ++i) {
+      stats.push_back(text(std::format("{} dots", teamControls[i])) | color(COLORS[i]));
+    }
+
+    Element doc = vbox({text("Dots Battle"),
+                        separator(),
+                        hbox({window(text(""), text("")) |
+                                  size(WIDTH, EQUAL, width_ + 2) |
+                                  size(HEIGHT, EQUAL, height_ + 2),
+                              vbox(stats)})}) |
+                  border;
+
+    screen_ = ftxui::Screen::Create(Dimension::Fit(doc));
+    ftxui::Render(screen_, doc);
+    // KLUDGE: I can't find a better way to do this, but I wish there was a better
+    // way than using hardcoded indicies.
+    ftxui::Render(screen_, doc);
+    drawBattlefield({2, 4}, screen_, board);
 
     std::cout << reset;
     screen_.Print();
   }
 
-  void Screen::drawBattlefield(Coordinate URS, ftxui::Screen& drawArea, const Board& board) {
-    for (std::int32_t y = URS.y; y < height_ + URS.y; ++y) {
-      for (std::int32_t x = URS.x; x < width_ + URS.x; ++x) {
+  void Screen::displayGameOver(std::int32_t team, const std::string& teamName) {
+    auto reset = screen_.ResetPosition();
+    std::cout << reset;
+    screen_.Clear();
+    screen_.Print();
+    reset = screen_.ResetPosition();
+    std::cout << reset;
+
+    ftxui::Element doc = ftxui::vbox({ftxui::text("GAME OVER!") | ftxui::center,
+                                      ftxui::text("WINNER:") | ftxui::center,
+                                      ftxui::text(std::format("{} - {}", team, teamName)) |
+                                          ftxui::color(COLORS[team]) | ftxui::center}) |
+                         ftxui::borderDouble;
+    screen_ = ftxui::Screen::Create(ftxui::Dimension::Fit(doc), ftxui::Dimension::Fit(doc));
+    ftxui::Render(screen_, doc);
+    screen_.Print();
+  }
+
+  void Screen::drawBattlefield(Coordinate offset, ftxui::Screen& drawArea, const Board& board) {
+    for (std::int32_t y = 0; y < height_; ++y) {
+      for (std::int32_t x = 0; x < width_; ++x) {
         std::int32_t team = board.getTeam(Coordinate{x, y});
         if (team) {
           ftxui::Color color = COLORS[team];
-          auto& px = screen_.PixelAt(x, y);
+          auto& px = screen_.PixelAt(x + offset.x, y + offset.y);
           px.character = "O";
           px.foreground_color = color;
         } else {
           ftxui::Color color = ftxui::Color::White;
-          auto& px = screen_.PixelAt(x, y);
+          auto& px = screen_.PixelAt(x + offset.x, y + offset.y);
           px.character = "+";
           px.foreground_color = color;
         }

@@ -20,14 +20,17 @@ int main() {
     return name;
   });
 
-  screen.render(engine.getCurrentBoard());
+  screen.render(engine.getCurrentBoard(), engine.getTeamControls());
 
   while (engine.isRunning()) {
     auto now = std::chrono::system_clock::now();
     engine.runOnce();
-    screen.render(engine.getCurrentBoard());
+    screen.render(engine.getCurrentBoard(), engine.getTeamControls());
     std::this_thread::sleep_until(now + loopTime);
   }
+
+  auto winner = engine.getWinner();
+  screen.displayGameOver(winner.team, winner.teamName);
 
   return 0;
 }

@@ -13,16 +13,24 @@
 #include "Board.h"
 
 namespace battle {
+  struct WinnerData {
+    std::int32_t team;
+    std::string teamName;
+  };
+
   class Engine {
    public:
     Engine(std::int32_t width, std::int32_t height);
 
-    bool isRunning();
+    bool isRunning() const noexcept;
 
     void addNewPlayer(std::unique_ptr<Dot> newPlayer);
     void runOnce();
 
+
     const Board& getCurrentBoard() const noexcept;
+    const std::vector<std::int32_t>& getTeamControls() const noexcept;
+    WinnerData getWinner() const noexcept;
 
    private:
     Board board_;

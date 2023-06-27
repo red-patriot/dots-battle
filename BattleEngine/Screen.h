@@ -16,7 +16,8 @@ namespace battle {
     Screen(std::int32_t width, std::int32_t height);
 
     void doPlayerSelection(std::function<std::string(std::string)> loaderFunc);
-    void render(const Board& board);
+    void render(const Board& board, const std::vector<std::int32_t>& teamControls);
+    void displayGameOver(std::int32_t team, const std::string& teamName);
 
    private:
     static const std::array<ftxui::Color, 16> COLORS;
@@ -26,7 +27,7 @@ namespace battle {
 
     ftxui::Screen screen_;
 
-    void drawBattlefield(Coordinate URS, ftxui::Screen& drawArea, const Board& board);
+    void drawBattlefield(Coordinate offset, ftxui::Screen& drawArea, const Board& board);
   };
 }  // namespace battle
 
