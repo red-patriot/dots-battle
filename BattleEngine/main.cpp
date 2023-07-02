@@ -7,11 +7,11 @@
 #include "LoadPlayer.h"
 
 using namespace std::chrono_literals;
-static const std::chrono::milliseconds loopTime = 500ms;
+static const std::chrono::milliseconds loopTime = 50ms;
 
 int main() {
-  battle::Engine engine{4, 5};
-  battle::Screen screen{4, 5};
+  battle::Engine engine{24, 12};
+  battle::Screen screen{24, 12};
 
   screen.doPlayerSelection([&](const std::string& filename) {
     auto player = battle::loadPlayer(filename);

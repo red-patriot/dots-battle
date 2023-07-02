@@ -182,13 +182,13 @@ namespace battle {
   void Engine::startReplicate(Coordinate location,
                               std::unique_ptr<Dot> child, Direction dir) {
     auto parent = board_.removeDot(location);
+    std::unique_ptr<Dot> parentWrapper = std::make_unique<ReplicatingDot>(std::move(parent.dot),
+                                                                          this);
+    board_.setSpace(location, {.team = parent.team, .dot = std::move(parentWrapper)});
     auto birthplace = calculateMoveCoord(location, dir);
     if (!board_.getTeam(birthplace) && board_.inBounds(birthplace)) {
-      std::unique_ptr<Dot> parentWrapper = std::make_unique<ReplicatingDot>(std::move(parent.dot),
-                                                                            this);
       std::unique_ptr<Dot> childWrapper = std::make_unique<ReplicatingDot>(std::move(child),
                                                                            this);
-      board_.setSpace(location, {.team = parent.team, .dot = std::move(parentWrapper)});
       if (board_.setSpace(birthplace, {.team = board_.getTeam(location),
                                        .dot = std::move(childWrapper)})) {
         ++teamControl_[board_.getTeam(location)];
