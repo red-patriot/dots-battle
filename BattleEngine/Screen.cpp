@@ -96,8 +96,12 @@ namespace battle {
     auto reset = screen_.ResetPosition();
     Elements stats;
     stats.push_back(separator());
+    double boardSize = width_ * height_;
     for (size_t i = 1; i < teamControls.size(); ++i) {
-      stats.push_back(text(std::format("{} dots", teamControls[i])) | color(COLORS[i]));
+      stats.push_back(ftxui::hbox(
+                          {text(std::format("{:4} dots ", teamControls[i])),
+                           ftxui::gauge(teamControls[i] / boardSize) | size(WIDTH, EQUAL, 20)}) |
+                      color(COLORS[i]));
     }
 
     Element doc = vbox({text("Dots Battle"),
