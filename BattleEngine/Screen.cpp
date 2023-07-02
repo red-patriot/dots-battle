@@ -1,6 +1,7 @@
-#include "Screen.h"
+﻿#include "Screen.h"
 
 #include <iostream>
+#include <string>
 
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/loop.hpp>
@@ -51,7 +52,7 @@ namespace battle {
         auto name = loaderFunc(dllFileName);
         errorText = "";
         ++players;
-        currentPlayers.push_back(ftxui::text(name + " (O)") | ftxui::bgcolor(COLORS[players]));
+        currentPlayers.push_back(ftxui::text(name) | ftxui::bgcolor(COLORS[players]));
       } catch (...) {
         errorText = "Error loading player from: " + dllFileName;
       }
@@ -66,7 +67,7 @@ namespace battle {
     auto renderer = ftxui::Renderer(comp, [&]() {
       return ftxui::vbox({ftxui::text("Player Selection"),
                           ftxui::separator(),
-                          dllInput->Render(),
+                          dllInput->Render() | size(WIDTH, EQUAL, 50),
                           ftxui::separator(),
                           ftxui::text("Players:"),
                           ftxui::vbox(currentPlayers) | ftxui::border,
@@ -96,8 +97,14 @@ namespace battle {
     auto reset = screen_.ResetPosition();
     Elements stats;
     stats.push_back(separator());
+    std::int32_t winner = *std::ranges::max_element(teamControls);
+    double boardSize = width_ * height_;
     for (size_t i = 1; i < teamControls.size(); ++i) {
-      stats.push_back(text(std::format("{} dots", teamControls[i])) | color(COLORS[i]));
+      stats.push_back(ftxui::hbox(
+                          {text(teamControls[i] == winner ? L"\u2B50" : L" ") | size(WIDTH, EQUAL, 2),
+                           text(std::format("{:3} dots ", teamControls[i])),
+                           ftxui::gauge(teamControls[i] / boardSize) | size(WIDTH, EQUAL, 20)}) |
+                      color(COLORS[i]));
     }
 
     Element doc = vbox({text("Dots Battle"),
@@ -144,16 +151,18 @@ namespace battle {
         if (team) {
           ftxui::Color color = COLORS[team];
           auto& px = screen_.PixelAt(x + offset.x, y + offset.y);
-          px.character = "O";
+          px.character = to_string(L"\u2B24");
           px.foreground_color = color;
         } else {
           ftxui::Color color = ftxui::Color::White;
           auto& px = screen_.PixelAt(x + offset.x, y + offset.y);
-          px.character = "+";
+          px.character = to_string(L"\u00B7");
           px.foreground_color = color;
         }
       }
     }
+
+    ftxui::Element e;
   }
 
 }  // namespace battle

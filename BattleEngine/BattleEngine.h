@@ -51,8 +51,7 @@ namespace battle {
     void doAttack(Coordinate attacker, Coordinate target);
     void startReplicate(Coordinate location,
                         std::unique_ptr<Dot> child, Direction dir);
-    void doReplicate(std::unique_ptr<Dot> parent, Coordinate location,
-                     std::unique_ptr<Dot> child, Direction dir);
+    void finishReplicate(std::unique_ptr<Dot> parent, Coordinate location);
   };
 }  // namespace battle
 

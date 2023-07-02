@@ -70,4 +70,7 @@ namespace battle {
   size_t Board::boardIndex(Coordinate space) const noexcept {
     return space.y * width_ + space.x;
   }
+  bool Board::inBounds(Coordinate space) const noexcept {
+    return space.y >= 0 && space.y < height_ && space.x >= 0 && space.x < width_;
+  }
 }  // namespace battle

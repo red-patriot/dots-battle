@@ -7,7 +7,7 @@
 #include "LoadPlayer.h"
 
 using namespace std::chrono_literals;
-static const std::chrono::milliseconds loopTime = 100ms;
+static const std::chrono::milliseconds loopTime = 50ms;
 
 int main() {
   battle::Engine engine{24, 12};
