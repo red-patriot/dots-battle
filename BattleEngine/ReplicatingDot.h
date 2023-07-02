@@ -10,28 +10,23 @@ namespace battle {
   class ReplicatingDot : public Dot {
    public:
     ReplicatingDot(std::unique_ptr<Dot> parent,
-                   std::unique_ptr<Dot> child,
-                   Direction replicateDir,
                    Engine* engine) :
-        parent_(std::move(parent)),
-        child_(std::move(child)),
-        replicateDir_(replicateDir),
+        dot_(std::move(parent)),
         engine_(engine) { }
 
     std::string getName() const noexcept override {
-      return parent_->getName();
+      return dot_->getName();
     }
     void wasEliminated(std::int32_t team, std::int32_t killer,
                        std::int32_t row, std::int32_t column) noexcept override {
-      parent_->wasEliminated(team, killer, row, column);
+      dot_->wasEliminated(team, killer, row, column);
     }
 
     battle::RunAction run(std::int32_t team, std::array<std::int32_t, 8> view,
                           std::int32_t row, std::int32_t column) noexcept override {
       --countdown_;
       if (countdown_ == 0) {
-        engine_->doReplicate(std::move(parent_), Coordinate{row, column},
-                             std::move(child_), replicateDir_);
+        engine_->finishReplicate(std::move(dot_), Coordinate{row, column});
       }
       return RunAction{.type = RunAction::WAIT};
     }
@@ -39,9 +34,7 @@ namespace battle {
    private:
     int countdown_ = 100;  // Turns to replicate
 
-    std::unique_ptr<Dot> parent_;
-    std::unique_ptr<Dot> child_;
-    Direction replicateDir_;
+    std::unique_ptr<Dot> dot_;
     Engine* engine_;
   };
 }  // namespace battle
