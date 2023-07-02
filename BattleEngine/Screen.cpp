@@ -1,6 +1,7 @@
-#include "Screen.h"
+﻿#include "Screen.h"
 
 #include <iostream>
+#include <string>
 
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/loop.hpp>
@@ -51,7 +52,7 @@ namespace battle {
         auto name = loaderFunc(dllFileName);
         errorText = "";
         ++players;
-        currentPlayers.push_back(ftxui::text(name + " (O)") | ftxui::bgcolor(COLORS[players]));
+        currentPlayers.push_back(ftxui::text(name) | ftxui::bgcolor(COLORS[players]));
       } catch (...) {
         errorText = "Error loading player from: " + dllFileName;
       }
@@ -148,16 +149,18 @@ namespace battle {
         if (team) {
           ftxui::Color color = COLORS[team];
           auto& px = screen_.PixelAt(x + offset.x, y + offset.y);
-          px.character = "O";
+          px.character = to_string(L"\u2B24");
           px.foreground_color = color;
         } else {
           ftxui::Color color = ftxui::Color::White;
           auto& px = screen_.PixelAt(x + offset.x, y + offset.y);
-          px.character = "+";
+          px.character = to_string(L"\u00B7");
           px.foreground_color = color;
         }
       }
     }
+
+    ftxui::Element e;
   }
 
 }  // namespace battle
