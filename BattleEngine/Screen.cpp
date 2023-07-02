@@ -97,10 +97,12 @@ namespace battle {
     auto reset = screen_.ResetPosition();
     Elements stats;
     stats.push_back(separator());
+    std::int32_t winner = *std::ranges::max_element(teamControls);
     double boardSize = width_ * height_;
     for (size_t i = 1; i < teamControls.size(); ++i) {
       stats.push_back(ftxui::hbox(
-                          {text(std::format("{:4} dots ", teamControls[i])),
+                          {text(teamControls[i] == winner ? L"\u2B50" : L" ") | size(WIDTH, EQUAL, 2),
+                           text(std::format("{:3} dots ", teamControls[i])),
                            ftxui::gauge(teamControls[i] / boardSize) | size(WIDTH, EQUAL, 20)}) |
                       color(COLORS[i]));
     }
