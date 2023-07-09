@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 
+#include <nfd.h>
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/loop.hpp>
 #include <ftxui/component/screen_interactive.hpp>
@@ -13,22 +14,22 @@ using namespace ftxui;
 
 namespace battle {
 
-  const std::array<ftxui::Color, 16> Screen::COLORS = {ftxui::Color::Black,
-                                                       ftxui::Color::Blue,
-                                                       ftxui::Color::Red,
-                                                       ftxui::Color::Green,
-                                                       ftxui::Color::Yellow,
-                                                       ftxui::Color::Magenta,
-                                                       ftxui::Color::Cyan,
-                                                       ftxui::Color::LightSlateGrey,
-                                                       ftxui::Color::SkyBlue1,
-                                                       ftxui::Color::DarkSeaGreen,
-                                                       ftxui::Color::DarkKhaki,
-                                                       ftxui::Color::DarkTurquoise,
-                                                       ftxui::Color::DarkOrange,
-                                                       ftxui::Color::DarkGoldenrod,
-                                                       ftxui::Color::DarkViolet,
-                                                       ftxui::Color::Pink1};
+  const std::array<ftxui::Color, 16> Screen::COLORS = {Color::Black,
+                                                       Color::Blue,
+                                                       Color::Red,
+                                                       Color::Green,
+                                                       Color::Yellow,
+                                                       Color::Magenta,
+                                                       Color::Cyan,
+                                                       Color::LightSlateGrey,
+                                                       Color::SkyBlue1,
+                                                       Color::DarkSeaGreen,
+                                                       Color::DarkKhaki,
+                                                       Color::DarkTurquoise,
+                                                       Color::DarkOrange,
+                                                       Color::DarkGoldenrod,
+                                                       Color::DarkViolet,
+                                                       Color::Pink1};
 
   Screen::Screen(std::int32_t width, std::int32_t height) :
       width_(width),
@@ -39,11 +40,11 @@ namespace battle {
     std::string dllFileName;
     std::string errorText;
     int players = 0;
-    std::vector<ftxui::Element> currentPlayers;
+    std::vector<Element> currentPlayers;
     bool shouldBattle = false;
 
     ftxui::InputOption opt;
-    opt.on_enter = [&]() {
+    auto doLoad = [&]() {
       try {
         if (players >= COLORS.size() - 1) {
           errorText = std::format("Error: the maximum number of players is {}", COLORS.size());
@@ -57,25 +58,44 @@ namespace battle {
         errorText = "Error loading player from: " + dllFileName;
       }
     };
+    opt.on_enter = doLoad;
 
     ftxui::Component dllInput = ftxui::Input(&dllFileName, "player", opt);
     ftxui::Component goButton = ftxui::Button("Battle", [&]() { shouldBattle = true; });
+    ftxui::Component loadButton = ftxui::Button(
+        L"\u2BA9 \u2B24", [&]() {
+          nfdchar_t* fileName = nullptr;
+          nfdresult_t result = NFD_OpenDialog("dll", nullptr, &fileName);
 
-    ftxui::Component comp = ftxui::Container::Vertical({dllInput,
-                                                        goButton});
+          switch (result) {
+            case NFD_OKAY:
+              dllFileName = std::string(fileName);
+              doLoad();
+              break;
+            case NFD_CANCEL:
+            case NFD_ERROR:
+              break;
+          }
+        },
+        ButtonOption::Ascii());
 
-    auto renderer = ftxui::Renderer(comp, [&]() {
-      return ftxui::vbox({ftxui::text("Player Selection"),
-                          ftxui::separator(),
-                          dllInput->Render() | size(WIDTH, EQUAL, 50),
-                          ftxui::separator(),
-                          ftxui::text("Players:"),
-                          ftxui::vbox(currentPlayers) | ftxui::border,
-                          ftxui::hbox({ftxui::text("") | ftxui::flex,
-                                       goButton->Render()}),
-                          ftxui::separator(),
-                          ftxui::paragraph(errorText)}) |
-             ftxui::border;
+    ftxui::Component comp = Container::Vertical({dllInput,
+                                                        goButton,
+                                                        loadButton});
+
+    auto renderer = Renderer(comp, [&]() {
+      return vbox({text("Player Selection"),
+                          separator(),
+                          hbox({dllInput->Render() | size(WIDTH, EQUAL, 50),
+                                loadButton->Render()}),
+                          separator(),
+                          text("Players:"),
+                          vbox(currentPlayers) | border | size(HEIGHT, EQUAL, COLORS.size() + 2),
+                          hbox({ftxui::text("") | flex,
+                                goButton->Render()}),
+                          separator(),
+                          paragraph(errorText)}) |
+             border;
     });
 
     auto selectionScreen = ftxui::ScreenInteractive::FitComponent();
